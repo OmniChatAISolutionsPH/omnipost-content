@@ -12,46 +12,44 @@ console.log('SUPABASE_URL:', SUPABASE_URL ? '✅ Set' : '❌ Missing');
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// ===== MGA TOPICS NA IBA-IBA ARAW-ARAW =====
-const topics = [
-  "Kung nahihirapan ka sa customer inquiries, ang AI chatbot ang solusyon! 💬🤖",
-  "Ang AI automation ay hindi para sa malalaking kumpanya lang — kahit small business, pwedeng-pwede! 🏪🚀",
-  "Habang tulog ka, may AI na sumasagot sa customers mo. Gising na! 🌙💡",
-  "Ang AI ay hindi kaaway ng empleyado — ito ang bagong katulong mo! 🤝✨",
-  "5 taon kang nahirapan maghanap ng customers — sa AI, 5 minuto lang! ⏱️🔥",
-  "Gusto mo bang doble ang leads mo ngayong buwan? Eto ang sikreto ng mga top businesses! 📈💰"
-];
-
-// ===== PUMILI NG TOPIC BATAY SA ARAW =====
-function getTodaysTopic() {
-  const day = new Date().getDate(); // 1-31
-  const index = (day - 1) % topics.length;
-  return topics[index];
-}
-
-// ===== GEMINI API - CONTENT GENERATOR =====
+// ===== GEMINI API - CONTENT GENERATOR (SI AI NA ANG BAHALA) =====
 async function generateContent() {
-  console.log('🤖 Generating fresh content with Gemini...');
+  console.log('🤖 Gemini, ikaw na ang bahala sa topic ngayon...');
   
-  const topic = getTodaysTopic();
-  console.log('📌 Today\'s topic:', topic);
-  
-  const prompt = `Gumawa ng isang engaging Facebook post para sa AI automation agency sa Pilipinas.
+  const prompt = `Ikaw ang pinaka-malupit na Filipino content creator at social media strategist.
 
-Topic: "${topic}"
+Gumawa ng isang sobrang engaging na Facebook post para sa page ng OmniChat AI Solutions PH — isang AI Automation Agency na tumutulong sa mga small businesses sa Pilipinas.
 
-Requirements:
-- Haba: 5-10 sentences
-- Taglish (Tagalog + English)
-- May emoji
+IMPORTANTE: Ikaw ang bahala sa TOPIC. Pumili ka ng anumang relevant at interesting na topic tungkol sa AI automation para sa small businesses. Basta dapat:
+- Fresh at bago (hindi paulit-ulit)
+- Makaka-relate ang small business owners
+- May value at matututunan nila
+
+Mga pwedeng pagpilian (pero hindi limited dito):
+- Paano makatipid ng oras gamit ang AI
+- Bakit 24/7 support ang kailangan ng customers
+- AI lead generation secrets
+- AI vs manual work
+- Paano magsimula sa AI kahit walang technical background
+- Mga common mistakes sa AI automation
+- AI tools na pwedeng gamitin ng small businesses
+- Ano ang future ng AI sa Pilipinas
+
+REQUIREMENTS SA POST:
+- Haba: 8-15 sentences
+- May "hook" sa unang 2 sentences — dapat mapahinto ang reader
+- May personal na kwento o scenario na relatable
+- May explanation ng benefits ng AI automation
+- May mention ng services at promo: "50% OFF sa First Month"
 - May call-to-action: "Kunin ang FREE AI Automation Starter Kit: https://omnichataisolutionsph.github.io/omnichat-optin/"
-- May promo: "50% OFF sa First Month!"
-- Hashtags: #AIAutomationPH #SmallBusinessTips #OmniChatAI
+- May hashtags: #AIAutomationPH #SmallBusinessTips #OmniChatAI
+- Parang nagkukuwento lang sa kaibigan, hindi nagbebenta
+- Gumamit ng Taglish (Tagalog + English)
 
 Output format:
 {
-  "caption": "dito ang caption",
-  "image_prompt": "dito ang prompt para sa infographic"
+  "caption": "dito ang buong caption",
+  "image_prompt": "dito ang detailed prompt para sa infographic"
 }
 
 Return ONLY the JSON.`;
@@ -68,8 +66,8 @@ Return ONLY the JSON.`;
           parts: [{ text: prompt }]
         }],
         generationConfig: {
-          temperature: 0.9,
-          maxOutputTokens: 500
+          temperature: 0.95,
+          maxOutputTokens: 800
         }
       })
     });
@@ -94,17 +92,9 @@ Return ONLY the JSON.`;
     }
   } catch (error) {
     console.error('❌ Error:', error);
-    // Fallback na iba-iba ang content
-    const fallbacks = [
-      "Nagsasawa ka na bang mag-reply sa inquiries 24/7? 😩 Ang AI chatbot ang solusyon! 24/7 support kahit tulog ka. 💤🤖",
-      "Gusto mo ng mas maraming customers? Ang AI lead generation ang sikreto ng mga top businesses! 📊🚀",
-      "Takot ka ba sa AI? Huwag! Ito ang magiging pinakamatalino mong empleyado. 🤝🧠",
-      "5 taon kang nagtiis sa manual work. Sa AI, 5 minuto lang! ⏱️😱"
-    ];
-    const randomIndex = Math.floor(Math.random() * fallbacks.length);
     return {
-      caption: `${topic}\n\n${fallbacks[randomIndex]}\n\nKunin ang FREE AI Automation Starter Kit: https://omnichataisolutionsph.github.io/omnichat-optin/\n\nI-message kami para sa free consultation! 📩\n\n#AIAutomationPH #SmallBusinessTips #OmniChatAI`,
-      image_prompt: `Futuristic AI technology helping a small Filipino business owner, modern workspace, neon blue and purple, infographic style, high quality, 1080x1080`
+      caption: `Gising na, mga ka-OmniChat! 🌅\n\nAlam mo ba na may mga small business owners na kumikita na habang tulog sila? 😱\n\nAng sikreto? AI automation! 🤖\n\nHindi ito para sa malalaking kumpanya lang — kahit ikaw, pwedeng-pwede ka nang magkaroon ng 24/7 customer support at automatic lead capture. 💡\n\nMay 50% OFF sa first month para sa unang 10 customers! 🎉\n\nKunin ang FREE AI Automation Starter Kit: https://omnichataisolutionsph.github.io/omnichat-optin/\n\nI-message mo na kami para sa free consultation! 📩\n\n#AIAutomationPH #SmallBusinessTips #OmniChatAI`,
+      image_prompt: `Futuristic AI technology helping a small Filipino business owner, modern workspace, cyberpunk style, neon blue and purple, infographic style, high quality, 1080x1080`
     };
   }
 }
@@ -137,14 +127,14 @@ async function saveToSupabase(caption, imagePrompt) {
 
 // ===== MAIN =====
 async function main() {
-  console.log('🚀 Starting OmniPost AI...');
+  console.log('🚀 Starting OmniPost AI - AI CHOOSES TOPIC MODE...');
   console.log('⏰ Time:', new Date().toLocaleString('en-PH', { timeZone: 'Asia/Manila' }));
 
   const { caption, image_prompt } = await generateContent();
   console.log('\n📝 CAPTION:\n', caption);
 
   await saveToSupabase(caption, image_prompt);
-  console.log('\n✅ Content saved to Supabase!');
+  console.log('\n✅ Content saved to Supabase! Ready for Make.com to post.');
 }
 
 main().catch(console.error);
