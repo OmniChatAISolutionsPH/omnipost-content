@@ -72,7 +72,7 @@ Output format:
 Return ONLY the JSON.`;
 
   try {
-    const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent', {
+    const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent', {
       method: 'POST',
       headers: {
         'x-goog-api-key': GEMINI_API_KEY,
