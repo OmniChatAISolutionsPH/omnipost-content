@@ -13,63 +13,96 @@ console.log('SUPABASE_KEY:', SUPABASE_KEY ? '✅ Set' : '❌ Missing');
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// ===== GEMINI API - SUPER VIRAL CONTENT GENERATOR =====
+// ===== GEMINI API - VIRAL CONTENT GENERATOR =====
 async function generateContent() {
   console.log('🤖 Generating VIRAL content with Gemini...');
   
-  const prompt = `Ikaw ang pinaka-malupit at creative na Filipino social media content creator. Ang goal mo ay gumawa ng posts na magvi-viral at makakakuha ng maraming engagement.
+  const systemPrompt = `Ikaw ang pinaka-malupit na Filipino content creator at social media strategist. 
+Ang specialty mo ay gumawa ng posts na nagvi-viral at nakakakuha ng maraming engagement.
 
-Bawat post ay dapat:
-1. **MAKAKA-RELATE** - parang sinasabi mo ang iniisip ng small business owners
-2. **MAY EMOSYON** - nakakatawa, nakaka-inspire, o nakaka-ngiti
-3. **MAY VALUE** - may matututunan ang reader
-4. **MAY CALL-TO-ACTION** - may gagawin sila pagkatapos basahin
-5. **MAY PERSONALITY** - parang kaibigan lang kausap, hindi robot
+Mga dapat tandaan:
+- Gumamit ng "hook" sa unang linya - dapat mapahinto ang reader
+- Magkwento na parang kaibigan lang, hindi parang salesperson
+- Maging relatable - dapat masabi ng reader "ah same!" o "totoo 'yan!"
+- Magbigay ng value - may matututunan sila
+- Gumamit ng conversational Taglish - parang nagcha-chat lang
+- Maglagay ng emoji para may personality
+- I-end with a call-to-action - dapat may gagawin sila
 
-Lead Magnet Link (isama sa bawat post): https://omnichataisolutionsph.github.io/omnichat-optin/
+Ang goal: Makakuha ng leads at engagement, hindi lang likes.`;
+
+  const userPrompt = `Gumawa ng isang sobrang engaging na Facebook post para sa page ng OmniChat AI Solutions PH.
+
+TARGET AUDIENCE: Filipino small business owners, freelancers, online sellers, at startups.
+
+LEAD MAGNET LINK (isama sa bawat post): https://omnichataisolutionsph.github.io/omnichat-optin/
+
+PROMO: "50% OFF sa First Month para sa unang 10 customers!"
 
 ---
 
-GUMAWA NG 1 POST gamit ang isa sa mga topics na ito (pumili ng pinaka-relevant ngayon):
+PUMILI NG ISA SA MGA TOPICS NA ITO:
 
-1. "Ang hirap maghanap ng customers? Eto ang sikreto ng mga top businesses ngayon. 🤫"
-2. "Nakakapagod na mag-reply sa inquiries 24/7? Eto ang ginagawa ng mga matatalinong negosyante. 💡"
-3. "Habang tulog ka, may kumikita na gamit ang AI. Gising na! 🚀"
-4. "5 taon kang nagtiis sa manual na trabaho. Sa AI, 5 minuto lang. 😱"
-5. "Ang AI ay hindi kaaway. Ito ang magiging pinakamatalino mong empleyado. 🤝"
-6. "Bakit ang hirap mag-follow up sa leads? Eto ang solusyon! 📊"
-7. "Ano ang ginagawa ng mga top businesses na hindi mo ginagawa? AI Automation! 🎯"
+1. "Ang hirap talaga maghanap ng customers no? 😩"
+   → I-kwento ang struggle ng paghahanap ng leads, tapos i-introduce ang AI lead generation
 
-REQUIREMENTS:
-- Haba: 5-10 sentences
-- Parang nagkukuwento lang sa kaibigan
-- May emoji sa halos bawat sentence
-- May nakakatawa o nakaka-relate na opening
-- May mahalagang lesson o insight
-- May PROMO: "First month 50% OFF sa unang 10 customers!"
-- May CTA: "I-message kami para sa FREE consultation" at i-link ang lead magnet
-- Gumamit ng Taglish (Tagalog + English)
-- Hindi boring, hindi puro technical
-- Parang gusto mong basahin hanggang dulo
+2. "Gusto mo bang magkaroon ng 24/7 na empleyado na hindi nagre-request ng OT pay? 🤖"
+   → I-kwento ang benefits ng AI chatbot para sa small business
 
-EXAMPLES NG MAGANDANG POST:
+3. "Alam mo ba na habang tulog ka, may mga negosyanteng kumikita na? 😱"
+   → I-kwento ang concept ng passive income through automation
 
-"Gising na, mga negosyante! 😅 Alam niyo ba na habang tulog kayo, may mga kumikita na gamit ang AI? 🤖 Oo, totoo 'yan! Habang kayo'y nagre-reply sa inquiries nang paisa-isa, ang iba ay naka-auto pilot na. 💡
+4. "Pagod ka na ba sa paulit-ulit na tanong ng customers? 😅"
+   → I-kwento ang solution ng AI FAQ automation
 
-Ang AI automation ay hindi para sa malalaking kumpanya lang. Kahit small business owner ka, pwedeng-pwede ka nang magkaroon ng 24/7 customer support, automatic lead capture, at social media auto-reply. 🚀
+5. "May 1 million ka bang piso? Kasi eto ang sikreto ng mga mayayamang negosyante! 💰"
+   → I-kwento ang ROI ng AI automation
 
-At ang best part? Hindi ito kasing mahal ng iniisip mo. 😱 May mga plans na nagsisimula sa ₱1,000/month lang — at may 50% OFF pa sa first month para sa unang 10 customers! 🎉
+---
 
-Gusto mong matuto? Kunin ang FREE AI Automation Starter Kit dito: https://omnichataisolutionsph.github.io/omnichat-optin/
+REQUIREMENTS SA CAPTION:
+- Haba: 8-15 sentences (mahaba, may laman)
+- May "hook" sa unang 2 sentences
+- May personal na kwento o scenario na relatable
+- May explanation ng benefits ng AI automation
+- May mention ng services at promo
+- May call-to-action: "Kunin ang FREE AI Automation Starter Kit" at "I-message kami para sa free consultation"
+- May hashtags sa dulo (#AIAutomationPH #SmallBusinessTips #OmniChatAI)
+- Parang nagkukuwento lang sa kaibigan, hindi nagbebenta
 
-I-message mo na kami ngayon para sa FREE consultation. Tatawagan ka ni Bernard sa loob ng 24 oras. 📞
+---
 
-#AIAutomation #SmallBusinessPH #OmniChatAI #BusinessTips #DigitalPH"
+MAGANDANG HALIMBAWA:
+
+"Gising na, mga ka-OmniChat! 🌅
+
+Alam niyo ba na may kakilala akong small business owner na dati ay puyat na puyat kakareply sa inquiries? 😩
+
+Araw-araw, paulit-ulit ang mga tanong: 'Magkano?' 'Paano mag-order?' 'Available pa ba?' — nakakapagod, diba? 😓
+
+Pero ngayon? Relax na siya. 😌 May AI chatbot na siyang sumasagot sa customers 24/7, kahit tulog siya! 🤖
+
+Habang siya ay nag-e-enjoy sa family time, ang bot naman ay kumukuha ng leads at nagre-reply sa inquiries. 💡
+
+Hindi ito para sa malalaking kumpanya lang. Kahit ikaw, may negosyo ka man o freelancer, pwedeng-pwede ka nang magkaroon ng AI assistant. 🚀
+
+At ang best part? May 50% OFF sa first month para sa unang 10 customers! 🎉
+
+Gusto mong matuto? Kunin mo na ang FREE AI Automation Starter Kit dito: 👇
+https://omnichataisolutionsph.github.io/omnichat-optin/
+
+May tanong? I-message mo lang kami — free consultation pa 'yan! 📩
+
+#AIAutomationPH #SmallBusinessTips #OmniChatAI #BusinessGrowth #DigitalPH"
+
+---
+
+NGAYON, GUMAWA KA NG BAGONG POST (iba sa example) gamit ang isa sa mga topics sa itaas.
 
 Output format:
 {
   "caption": "dito ang buong caption",
-  "image_prompt": "dito ang detailed prompt para sa infographic"
+  "image_prompt": "dito ang prompt para sa infographic"
 }
 
 Return ONLY the JSON.`;
@@ -83,8 +116,12 @@ Return ONLY the JSON.`;
       },
       body: JSON.stringify({
         contents: [{
-          parts: [{ text: prompt }]
-        }]
+          parts: [{ text: systemPrompt + '\n\n' + userPrompt }]
+        }],
+        generationConfig: {
+          temperature: 0.9,
+          maxOutputTokens: 800
+        }
       })
     });
 
@@ -109,7 +146,7 @@ Return ONLY the JSON.`;
   } catch (error) {
     console.error('❌ Error:', error);
     return {
-      caption: `Gising na, mga negosyante! 😅 Habang binabasa mo ito, may mga kumikita na gamit ang AI. 🚀\n\nAng AI automation ay hindi para sa malalaking kumpanya lang. Kahit small business owner ka, pwedeng-pwede ka nang magkaroon ng 24/7 customer support at automatic lead capture. 💡\n\nMay 50% OFF pa sa first month para sa unang 10 customers! 🎉\n\nKunin ang FREE AI Automation Starter Kit: https://omnichataisolutionsph.github.io/omnichat-optin/\n\nI-message mo na kami para sa FREE consultation. 📞\n\n#AIAutomation #SmallBusinessPH #OmniChatAI`,
+      caption: `Gising na, mga ka-OmniChat! 🌅\n\nAlam mo ba na may kakilala akong business owner na dati ay puyat na puyat kakareply sa inquiries? 😩 Pero ngayon, relax na siya dahil may AI chatbot na siyang sumasagot 24/7! 🤖\n\nHabang siya ay tulog, ang bot naman ay kumukuha ng leads at nagre-reply sa customers. 💡\n\nHindi ito para sa malalaking kumpanya lang — kahit ikaw, pwedeng-pwede ka nang magkaroon ng AI assistant. 🚀\n\nMay 50% OFF sa first month para sa unang 10 customers! 🎉\n\nKunin ang FREE AI Automation Starter Kit: https://omnichataisolutionsph.github.io/omnichat-optin/\n\nI-message mo na kami para sa free consultation! 📩\n\n#AIAutomationPH #SmallBusinessTips #OmniChatAI`,
       image_prompt: 'Futuristic AI technology helping a small Filipino business owner, modern workspace, cyberpunk style, neon blue and purple, infographic style, high quality, 1080x1080, motivational, vibrant colors, Filipino flag elements, modern business theme'
     };
   }
