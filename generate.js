@@ -12,7 +12,7 @@ console.log('SUPABASE_URL:', SUPABASE_URL ? '✅ Set' : '❌ Missing');
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// ===== MGA TOPICS =====
+// ===== MGA TOPICS (para iba-iba araw-araw) =====
 const topics = [
   {
     title: "Ang hirap maghanap ng customers? 😩",
@@ -46,10 +46,10 @@ const topics = [
   }
 ];
 
-// ===== PUMILI NG RANDOM TOPIC =====
-function getRandomTopic() {
-  const today = new Date().getDate();
-  const index = today % topics.length;
+// ===== PUMILI NG RANDOM TOPIC BATAY SA ARAW =====
+function getTopicForToday() {
+  const day = new Date().getDate(); // 1-31
+  const index = (day - 1) % topics.length;
   return topics[index];
 }
 
@@ -57,8 +57,8 @@ function getRandomTopic() {
 async function generateContent() {
   console.log('🤖 Generating fresh content with Gemini...');
   
-  const topic = getRandomTopic();
-  console.log('📌 Topic selected:', topic.title);
+  const topic = getTopicForToday();
+  console.log('📌 Today\'s topic:', topic.title);
   
   const prompt = `Ikaw ang pinaka-malupit na Filipino content creator. Gumawa ng isang sobrang engaging na Facebook post para sa page ng OmniChat AI Solutions PH.
 
@@ -103,7 +103,7 @@ Return ONLY the JSON.`;
           parts: [{ text: prompt }]
         }],
         generationConfig: {
-          temperature: 0.9,
+          temperature: 0.95,
           maxOutputTokens: 800
         }
       })
@@ -117,21 +117,30 @@ Return ONLY the JSON.`;
 
     const data = await response.json();
     const content = data.candidates[0].content.parts[0].text;
-    console.log('📝 Raw content:', content);
+    console.log('📝 Gemini response:', content);
     
+    // Extract JSON from response
     const jsonMatch = content.match(/\{[\s\S]*\}/);
     if (jsonMatch) {
       const parsed = JSON.parse(jsonMatch[0]);
       console.log('✅ Parsed JSON successfully');
       return parsed;
     } else {
-      throw new Error('No JSON found');
+      throw new Error('No JSON found in response');
     }
   } catch (error) {
-    console.error('❌ Error:', error);
+    console.error('❌ Error generating content:', error);
+    // Fallback content (iba-iba depende sa topic)
+    const fallbackTopics = [
+      "Nagsasawa ka na bang mag-reply sa inquiries? 😩 Ang AI chatbot ang solusyon! 24/7 support kahit tulog ka. 💤🤖",
+      "Gusto mo ng mas maraming customers? Ang AI lead generation ang sikreto ng mga top businesses! 📊🚀",
+      "Takot ka ba sa AI? Huwag! Ito ang magiging pinakamatalino mong empleyado. 🤝🧠",
+      "5 taon kang nagtiis sa manual work. Sa AI, 5 minuto lang! ⏱️😱"
+    ];
+    const randomIndex = Math.floor(Math.random() * fallbackTopics.length);
     return {
-      caption: `Gising na, mga ka-OmniChat! 🌅\n\nAlam mo ba na ang AI automation ay hindi para sa malalaking kumpanya lang? 🤖\n\nKahit small business owner ka, pwedeng-pwede ka nang magkaroon ng 24/7 customer support at automatic lead capture. 💡\n\nMay 50% OFF sa first month para sa unang 10 customers! 🎉\n\nKunin ang FREE AI Automation Starter Kit: https://omnichataisolutionsph.github.io/omnichat-optin/\n\nI-message mo na kami para sa free consultation! 📩\n\n#AIAutomationPH #SmallBusinessTips #OmniChatAI`,
-      image_prompt: 'Futuristic AI technology helping a small Filipino business owner, modern workspace, cyberpunk style, neon blue and purple, infographic style, high quality, 1080x1080'
+      caption: `${topic.hook}\n\n${fallbackTopics[randomIndex]}\n\nKunin ang FREE AI Automation Starter Kit: https://omnichataisolutionsph.github.io/omnichat-optin/\n\nI-message kami para sa free consultation! 📩\n\n#AIAutomationPH #SmallBusinessTips #OmniChatAI`,
+      image_prompt: `Futuristic AI technology helping a small Filipino business owner, ${topic.angle}, modern workspace, cyberpunk style, neon blue and purple, infographic style, high quality, 1080x1080`
     };
   }
 }
