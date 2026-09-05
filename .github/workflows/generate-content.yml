@@ -1,9 +1,7 @@
 name: Generate Content
 
 on:
-  schedule:
-    - cron: '0 0,12 * * *'
-  workflow_dispatch:
+  workflow_dispatch:  # Manual trigger lang — walang automatic schedule
 
 jobs:
   generate:
