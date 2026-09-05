@@ -13,32 +13,63 @@ console.log('SUPABASE_KEY:', SUPABASE_KEY ? '✅ Set' : '❌ Missing');
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// ===== GEMINI API - CONTENT GENERATOR =====
+// ===== GEMINI API - SUPER VIRAL CONTENT GENERATOR =====
 async function generateContent() {
-  console.log('🤖 Generating content with Gemini...');
+  console.log('🤖 Generating VIRAL content with Gemini...');
   
-  const prompt = `Gumawa ng isang sobrang lupit na Facebook post tungkol sa AI automation para sa small businesses sa Pilipinas.
+  const prompt = `Ikaw ang pinaka-malupit at creative na Filipino social media content creator. Ang goal mo ay gumawa ng posts na magvi-viral at makakakuha ng maraming engagement.
 
-Topic ideas (pumili ng isa):
+Bawat post ay dapat:
+1. **MAKAKA-RELATE** - parang sinasabi mo ang iniisip ng small business owners
+2. **MAY EMOSYON** - nakakatawa, nakaka-inspire, o nakaka-ngiti
+3. **MAY VALUE** - may matututunan ang reader
+4. **MAY CALL-TO-ACTION** - may gagawin sila pagkatapos basahin
+5. **MAY PERSONALITY** - parang kaibigan lang kausap, hindi robot
+
+Lead Magnet Link (isama sa bawat post): https://omnichataisolutionsph.github.io/omnichat-optin/
+
+---
+
+GUMAWA NG 1 POST gamit ang isa sa mga topics na ito (pumili ng pinaka-relevant ngayon):
+
 1. "Ang hirap maghanap ng customers? Eto ang sikreto ng mga top businesses ngayon. 🤫"
-2. "Hindi ka na dapat nahihirapan sa pag-reply sa customers! Eto ang ginagawa ng mga matatalinong negosyante. 💡"
-3. "Gumising ka na! Habang tulog ka, kumikita na ang iba gamit ang AI. 🚀"
+2. "Nakakapagod na mag-reply sa inquiries 24/7? Eto ang ginagawa ng mga matatalinong negosyante. 💡"
+3. "Habang tulog ka, may kumikita na gamit ang AI. Gising na! 🚀"
 4. "5 taon kang nagtiis sa manual na trabaho. Sa AI, 5 minuto lang. 😱"
 5. "Ang AI ay hindi kaaway. Ito ang magiging pinakamatalino mong empleyado. 🤝"
+6. "Bakit ang hirap mag-follow up sa leads? Eto ang solusyon! 📊"
+7. "Ano ang ginagawa ng mga top businesses na hindi mo ginagawa? AI Automation! 🎯"
 
-Requirements:
-- Haba: 4-8 sentences
-- May emoji sa bawat sentence
+REQUIREMENTS:
+- Haba: 5-10 sentences
+- Parang nagkukuwento lang sa kaibigan
+- May emoji sa halos bawat sentence
 - May nakakatawa o nakaka-relate na opening
 - May mahalagang lesson o insight
-- May call-to-action sa dulo: "I-message kami para sa free consultation!"
-- Gumamit ng Taglish
-- Parang nagkukuwento lang sa kaibigan
+- May PROMO: "First month 50% OFF sa unang 10 customers!"
+- May CTA: "I-message kami para sa FREE consultation" at i-link ang lead magnet
+- Gumamit ng Taglish (Tagalog + English)
+- Hindi boring, hindi puro technical
+- Parang gusto mong basahin hanggang dulo
 
-Output format (exact JSON):
+EXAMPLES NG MAGANDANG POST:
+
+"Gising na, mga negosyante! 😅 Alam niyo ba na habang tulog kayo, may mga kumikita na gamit ang AI? 🤖 Oo, totoo 'yan! Habang kayo'y nagre-reply sa inquiries nang paisa-isa, ang iba ay naka-auto pilot na. 💡
+
+Ang AI automation ay hindi para sa malalaking kumpanya lang. Kahit small business owner ka, pwedeng-pwede ka nang magkaroon ng 24/7 customer support, automatic lead capture, at social media auto-reply. 🚀
+
+At ang best part? Hindi ito kasing mahal ng iniisip mo. 😱 May mga plans na nagsisimula sa ₱1,000/month lang — at may 50% OFF pa sa first month para sa unang 10 customers! 🎉
+
+Gusto mong matuto? Kunin ang FREE AI Automation Starter Kit dito: https://omnichataisolutionsph.github.io/omnichat-optin/
+
+I-message mo na kami ngayon para sa FREE consultation. Tatawagan ka ni Bernard sa loob ng 24 oras. 📞
+
+#AIAutomation #SmallBusinessPH #OmniChatAI #BusinessTips #DigitalPH"
+
+Output format:
 {
-  "caption": "dito ang caption",
-  "image_prompt": "dito ang prompt para sa infographic"
+  "caption": "dito ang buong caption",
+  "image_prompt": "dito ang detailed prompt para sa infographic"
 }
 
 Return ONLY the JSON.`;
@@ -78,8 +109,8 @@ Return ONLY the JSON.`;
   } catch (error) {
     console.error('❌ Error:', error);
     return {
-      caption: `Hindi ka pa ba nag-a-AI automation? 😱\n\nHuwag kang mahuli! I-message mo na kami ngayon para sa FREE consultation. 📩\n\n#AIAutomation #SmallBusinessPH #OmniChatAI`,
-      image_prompt: 'Futuristic AI technology helping a small Filipino business owner, modern workspace, cyberpunk style, neon blue and purple, infographic style'
+      caption: `Gising na, mga negosyante! 😅 Habang binabasa mo ito, may mga kumikita na gamit ang AI. 🚀\n\nAng AI automation ay hindi para sa malalaking kumpanya lang. Kahit small business owner ka, pwedeng-pwede ka nang magkaroon ng 24/7 customer support at automatic lead capture. 💡\n\nMay 50% OFF pa sa first month para sa unang 10 customers! 🎉\n\nKunin ang FREE AI Automation Starter Kit: https://omnichataisolutionsph.github.io/omnichat-optin/\n\nI-message mo na kami para sa FREE consultation. 📞\n\n#AIAutomation #SmallBusinessPH #OmniChatAI`,
+      image_prompt: 'Futuristic AI technology helping a small Filipino business owner, modern workspace, cyberpunk style, neon blue and purple, infographic style, high quality, 1080x1080, motivational, vibrant colors, Filipino flag elements, modern business theme'
     };
   }
 }
@@ -112,7 +143,7 @@ async function saveToSupabase(caption, imagePrompt) {
 
 // ===== MAIN =====
 async function main() {
-  console.log('🚀 Starting OmniPost AI...');
+  console.log('🚀 Starting OmniPost AI - VIRAL CONTENT MODE...');
   console.log('⏰ Time:', new Date().toLocaleString('en-PH', { timeZone: 'Asia/Manila' }));
 
   const { caption, image_prompt } = await generateContent();
@@ -120,6 +151,7 @@ async function main() {
   console.log('\n🎨 IMAGE PROMPT:\n', image_prompt);
 
   await saveToSupabase(caption, image_prompt);
+  console.log('\n✅ Content saved to Supabase! Ready for Make.com to post.');
 }
 
 main().catch(console.error);
