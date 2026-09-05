@@ -18,7 +18,7 @@ async function getPreviousContent() {
 
   const { data, error } = await supabase
     .from('content_queue')
-    .select('caption, image_prompt') // kasama na ang image_prompt
+    .select('caption, image_prompt')
     .order('created_at', { ascending: false })
     .limit(20);
 
@@ -59,11 +59,11 @@ Siguraduhing:
 - Makaka-relate ang small business owners
 - May value at matututunan nila
 
-REQUIREMENTS SA CAPTION (MAHIGPIT NA SUSUNDIN):
-- HABA: KAILANGAN MINIMUM 150 WORDS, 8-15 buong sentences. HUWAG gagawa ng maikling caption — kung sa tingin mo tapos na ang caption pero wala pang 150 words, magdagdag pa ng detalye, halimbawa, o expansion ng kwento.
+REQUIREMENTS SA CAPTION:
+- HABA: minimum 120 words, 8-15 sentences.
 - May "hook" sa unang 2 sentences
-- May personal na kwento o scenario na relatable (mag-elaborate, huwag isang sentence lang)
-- May detalyadong explanation ng benefits ng AI automation (hindi lang basta binabanggit, ipaliwanag paano ito nakakatulong)
+- May personal na kwento o scenario na relatable
+- May explanation ng benefits ng AI automation
 - May mention ng promo: "50% OFF sa First Month"
 - May call-to-action: "Kunin ang FREE AI Automation Starter Kit: https://omnichataisolutionsph.github.io/omnichat-optin/"
 - May hashtags: #AIAutomationPH #SmallBusinessTips #OmniChatAI
@@ -71,17 +71,14 @@ REQUIREMENTS SA CAPTION (MAHIGPIT NA SUSUNDIN):
 - Gumamit ng Taglish
 
 REQUIREMENTS SA IMAGE_PROMPT:
-- Kailangan direktang kaugnay at specific sa TOPIC/KWENTO ng caption na ito (hindi generic na "modern workspace" palagi)
-- Magdetalye ng specific na scene, character, o visual metaphor na naiiba sa mga naunang image prompts.${previousImagesText}
-- Isama ang: setting, mood, color palette, style (infographic/photo-realistic/illustration), at aspect ratio (1080x1080)
+- Kailangan direktang kaugnay at specific sa TOPIC/KWENTO ng caption na ito
+- Magdetalye ng specific na scene na naiiba sa mga naunang image prompts.${previousImagesText}
+- Isama ang: setting, mood, color palette, style, aspect ratio (1080x1080)
 
-Output format:
-{
-  "caption": "dito ang buong caption (minimum 150 words)",
-  "image_prompt": "dito ang detailed at unique na prompt para sa infographic"
-}
+MAHALAGA: Panatilihing MAIKSI at DIRETSO ang bawat parte — huwag nang magdagdag ng ibang komento o paliwanag bukod sa JSON. Sundin ang word count nang eksakto, huwag lumagpas ng masyado.
 
-Return ONLY the JSON.`;
+Output format (JSON lang, walang ibang text bago o pagkatapos):
+{"caption": "...", "image_prompt": "..."}`;
 
   try {
     const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent', {
@@ -96,7 +93,10 @@ Return ONLY the JSON.`;
         }],
         generationConfig: {
           temperature: 1.0,
-          maxOutputTokens: 1500
+          maxOutputTokens: 4096,
+          thinkingConfig: {
+            thinkingBudget: 0
+          }
         }
       })
     });
@@ -108,8 +108,22 @@ Return ONLY the JSON.`;
     }
 
     const data = await response.json();
-    const content = data.candidates[0].content.parts[0].text;
-    console.log('📝 Gemini response:', content);
+
+    const finishReason = data.candidates?.[0]?.finishReason;
+    console.log('🏁 Finish reason:', finishReason);
+    if (finishReason === 'MAX_TOKENS') {
+      console.error('⚠️ Naputol ang response dahil naabot ang max tokens limit.');
+    }
+
+    let content = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    console.log('📝 Gemini raw response (full):', content);
+
+    if (!content) {
+      throw new Error('Walang laman ang response mula kay Gemini');
+    }
+
+    // Alisin ang markdown code fences (```json ... ```) kung meron
+    content = content.replace(/```json\s*/g, '').replace(/```\s*$/g, '').trim();
 
     const jsonMatch = content.match(/\{[\s\S]*\}/);
     if (jsonMatch) {
